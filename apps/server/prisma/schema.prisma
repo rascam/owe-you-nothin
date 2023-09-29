@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id String @id @default(cuid())
+  members User[]
+  size Int?
+  payments Payment[]
+  groupName String?
+  groupEmail String?
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String
+  pos Int
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+  group Group @relation(fields: [groupId], references: [id])
+  groupId String
+  type Type
+  payingUser Int?
+  amount Int
+  split Split?
+  currency Currency @default(EUR) 
+  purpose String?
+}
+
+model Split {
+  id Int @id @default(autoincrement())
+  payment Payment @relation(fields: [paymentId], references: [id])
+  paymentId Int @unique
+  split0 Int? @default(0)
+  split1 Int? @default(0)
+  split2 Int? @default(0)
+  split3 Int? @default(0)
+  split4 Int? @default(0)
+  split5 Int? @default(0)
+  split6 Int? @default(0)
+  split7 Int? @default(0)
+  split8 Int? @default(0)
+  split9 Int? @default(0)
+}
+
+enum Currency {
+  EUR
+  USD
+}
+
+enum Type {
+  payment
+  transaction
+}
+
+
+

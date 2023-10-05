@@ -20,12 +20,17 @@ server.use(express.json())
 // ENDPOINTS
 server.post('/groups', GroupController.createGroup)
 server.get('/:groupId/groups', GroupController.getGroup)
+server.get('/:groupId/balances', GroupController.getGroupBalances)
+
 
 server.post('/:groupId/users', UserController.addUser)
 server.get('/:groupId/users', UserController.getUsers)
+server.get('/:groupId/:userId/balance', UserController.getUserBalance)
 
 server.post('/:groupId/payments', PaymentController.addPayment)
-server.get('/:groupId/payments', PaymentController.getDetailedPayments)
+server.get('/:groupId/payments', PaymentController.getGroupPayments)
+server.get('/:groupId/:userId/payments', PaymentController.getUserPayments)
+
 
 
 

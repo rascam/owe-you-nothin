@@ -1,6 +1,9 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "node prisma/prismaSeed.js"
+  },
   "main": "index.js",
   "license": "MIT",
   "dependencies": {

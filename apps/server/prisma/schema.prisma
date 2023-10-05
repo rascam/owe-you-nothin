@@ -21,10 +21,11 @@ model Group {
 
 model User {
   id Int @id @default(autoincrement())
-  name String
+  username String
   group Group @relation(fields: [groupId], references: [id])
   groupId String
-  pos Int
+  splits Split[]
+  payments Payment[]
 }
 
 model Payment {
@@ -32,27 +33,21 @@ model Payment {
   group Group @relation(fields: [groupId], references: [id])
   groupId String
   type Type
-  payingUser Int?
+  payingUserId Int
+  payingUser User @relation(fields:[payingUserId], references: [id])
   amount Int
-  split Split?
+  splits Split[]
   currency Currency @default(EUR) 
   purpose String?
 }
 
 model Split {
   id Int @id @default(autoincrement())
+  splitAmount Int
   payment Payment @relation(fields: [paymentId], references: [id])
-  paymentId Int @unique
-  split0 Int? @default(0)
-  split1 Int? @default(0)
-  split2 Int? @default(0)
-  split3 Int? @default(0)
-  split4 Int? @default(0)
-  split5 Int? @default(0)
-  split6 Int? @default(0)
-  split7 Int? @default(0)
-  split8 Int? @default(0)
-  split9 Int? @default(0)
+  paymentId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 enum Currency {

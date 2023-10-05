@@ -20,22 +20,46 @@ const UserController = {
   }
   },
 
+  async getUserBalance(req:Request, res: Response, next: NextFunction) {
+    try {
+    console.log('UserController.getBalance')
+    const userId = parseInt(req.params.userId)
+    console.log({userId})
+      const data = await prisma.split.aggregate({
+        where: {
+          userId: userId,
+        },
+        _sum: {
+          splitAmount: true,
+        },
+      })
+      
+
+    res.status(200).json({userBalance: data._sum.splitAmount})
+  } catch (e) {
+    console.log('error:', e)
+    res.status(400).end()
+  }
+  },
+
   async addUser(req: Request, res: Response, next: NextFunction) {
     try {
       console.log('UserController.addUser')
       const groupId = req.params.groupId
-      const { name, pos} = req.body
-      console.log({ name, pos})
-      const createdGroup = await prisma.user.create({
-        data: { name, groupId, pos }
+      const { username} = req.body
+      console.log({ username, groupId})
+      const createdUser = await prisma.user.create({
+        data: {username, groupId }
       })
 
-      res.status(201).json(createdGroup)
+      res.status(201).json(createdUser)
     } catch (e) {
       console.log('error:', e)
       res.status(400).end()
     }
   },
+
+
 
 }
 
